@@ -1,0 +1,28 @@
+.home-content {
+  height: 2000px;
+  margin-top: 5px;
+}
+
+.home-content h1 {
+  font-size: 72px;
+  line-height: 74px;
+  font-weight: 700;
+}
+
+.home-content p {
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.home-content button {
+  background-color: var(--main-card-color);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.home-content > button > span {
+  font-weight: 900;
+  font-size: 14px;
+}
