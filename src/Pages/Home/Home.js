@@ -1,41 +1,50 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./home.css";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Card from "../../Components/Card/Card";
 
-const Home = ({ params, setParams, page, setPage }) => {
-  const [state, setState] = useState([]);
+const Home = ({ params, setParams }) => {
+  const [hasMore, sethasMore] = useState(true);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    console.log(state);
-    const fetchData = async () => {
+    const getData = async () => {
       try {
-        await axios
-          .post("http://localhost:3001/games", {
-            params,
-          })
-          .then((response) => {
-            setState((state) => {
-              return [...state, response.data.map((el) => el)];
-            });
-          });
+        const response = await axios.post("http://localhost:3001/games/all", {
+          page: 1,
+          page_result: 50,
+        });
+        setData(response.data);
+        console.log(response.data);
       } catch (error) {
         console.log(error.message);
       }
     };
-    fetchData();
-  }, [params, page]);
+    getData();
+  }, []);
 
-  const scrollToEnd = () => {
-    setPage(page + 1);
-    console.log("work");
+  const fetchNewData = async () => {
+    console.log(params);
+    try {
+      const res = await axios.post(`http://localhost:3001/games`, {
+        params,
+      });
+      const data = await res.data;
+      return data;
+    } catch (error) {
+      console.log(error.message);
+    }
   };
-
-  window.onscroll = function () {
-    if (
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight
-    ) {
-      scrollToEnd();
+  const fetchData = async () => {
+    const nextData = await fetchNewData();
+    setData([...data, ...nextData]);
+    setParams((prevParams) => ({
+      ...prevParams,
+      page: params.page + 1,
+    }));
+    if (data.length === 99999) {
+      sethasMore(false);
     }
   };
 
@@ -45,11 +54,29 @@ const Home = ({ params, setParams, page, setPage }) => {
         <div className="home-content">
           <h1>New and trending</h1>
           <p>Based on player counts and release date</p>
-          <button>
-            Order by : <span>Revelance</span>
+          <button className="home-content-btn">
+            Order by : <span className="underline">Revelance</span>
           </button>
-          <section style={{ backgroundColor: "blue" }}>
-            <div></div>
+          <section>
+            <div>
+              <InfiniteScroll
+                dataLength={data.length}
+                next={fetchData}
+                hasMore={hasMore}
+                loader={<h4>Loading...</h4>}
+                endMessage={
+                  <p style={{ textAlign: "center" }}>
+                    <b>No more games</b>
+                  </p>
+                }
+              >
+                <div className="">
+                  <div className="home-content-flex">
+                    <Card data={data} />
+                  </div>
+                </div>
+              </InfiniteScroll>
+            </div>
           </section>
         </div>
       </div>

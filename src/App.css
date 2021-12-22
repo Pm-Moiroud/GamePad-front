@@ -4,7 +4,8 @@
   --main-card-color: #202020;
   --main-height-header: 100px;
   --main-container-width: 95vw;
-  --navbar-width: 240px;
+  --navbar-width: 200px;
+  --main-button-color: hsla(0, 0%, 100%, 0.1);
 }
 /* Declaring basics rules */
 
@@ -41,6 +42,7 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 /* Declaring important classes */

@@ -15,8 +15,7 @@ import Header from "./Components/Header/Header";
 import NavBar from "./Components/NavBar/NavBar";
 
 function App() {
-  const [page, setPage] = useState(1);
-  const [params, setParams] = useState({ page: page, page_size: 20 });
+  const [params, setParams] = useState({ page: 1, page_size: 40 });
 
   return (
     <Router>
@@ -26,14 +25,7 @@ function App() {
         {/* Home page  */}
         <Route
           path="/"
-          element={
-            <Home
-              setPage={setPage}
-              page={page}
-              params={params}
-              setParams={setParams}
-            />
-          }
+          element={<Home params={params} setParams={setParams} />}
         />
 
         {/* Users pages */}
