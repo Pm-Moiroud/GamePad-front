@@ -1,0 +1,26 @@
+.realease-calendar-nav {
+  margin-top: 20px;
+  text-align: center;
+}
+.realease-calendar-nav button {
+  background-color: transparent;
+  font-size: 20px;
+}
+
+.realease-calendar-nav button:hover {
+  text-decoration: underline solid white 2px;
+  cursor: pointer;
+  transition: 1s ease-out;
+  color: white;
+}
+
+.selected {
+  text-decoration: underline solid white 2px;
+  cursor: pointer;
+  transition: 1s ease-out;
+  color: white;
+}
+
+.unSelected {
+  color: gray;
+}

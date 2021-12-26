@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./home.css";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Card from "../../Components/Card/Card";
+import Card from "../../../Components/Card/Card";
+import handleSearchThirty from "../../../assets/functions/functions";
 
-const Home = () => {
+const NextWeek = () => {
   const [hasMore, sethasMore] = useState(true);
   const [data, setData] = useState([]);
-  const [params, setParams] = useState({ page: 1, page_size: 40 });
+  const [params, setParams] = useState({
+    page: 1,
+    page_size: 40,
+    dates: handleSearchThirty("add", 14),
+  });
 
   useEffect(() => {
     const getData = async () => {
@@ -25,6 +29,7 @@ const Home = () => {
       }
     };
     getData();
+
     //eslint-disable-next-line
   }, []);
 
@@ -47,7 +52,7 @@ const Home = () => {
       ...prevParams,
       page: params.page + 1,
     }));
-    if (data.length === 99999) {
+    if (data.length === 99999 || nextData.length <= 40) {
       sethasMore(false);
     }
   };
@@ -70,7 +75,7 @@ const Home = () => {
                 loader={<h4>Loading...</h4>}
                 endMessage={
                   <p style={{ textAlign: "center" }}>
-                    <b>No more games</b>
+                    <b></b>
                   </p>
                 }
               >
@@ -88,4 +93,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default NextWeek;

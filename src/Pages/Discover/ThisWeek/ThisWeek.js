@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./home.css";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Card from "../../Components/Card/Card";
-
-const Home = () => {
+import Card from "../../../Components/Card/Card";
+import handleSearchThirty from "../../../assets/functions/functions";
+const LastDays = () => {
   const [hasMore, sethasMore] = useState(true);
   const [data, setData] = useState([]);
-  const [params, setParams] = useState({ page: 1, page_size: 40 });
+  const [params, setParams] = useState({
+    page: 1,
+    page_size: 40,
+    dates: handleSearchThirty("sub", 7),
+  });
 
   useEffect(() => {
+    handleSearchThirty("sub", 30);
+
     const getData = async () => {
       try {
         const response = await axios.post("http://localhost:3001/games/all", {
@@ -25,6 +30,7 @@ const Home = () => {
       }
     };
     getData();
+
     //eslint-disable-next-line
   }, []);
 
@@ -88,4 +94,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default LastDays;

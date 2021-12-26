@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./home.css";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Card from "../../Components/Card/Card";
+import Card from "../../../Components/Card/Card";
 
-const Home = () => {
+const LastDays = () => {
   const [hasMore, sethasMore] = useState(true);
   const [data, setData] = useState([]);
-  const [params, setParams] = useState({ page: 1, page_size: 40 });
+  const [params, setParams] = useState({
+    page: 1,
+    page_size: 40,
+    metacritic: "85, 100",
+  });
 
   useEffect(() => {
     const getData = async () => {
@@ -25,6 +28,7 @@ const Home = () => {
       }
     };
     getData();
+
     //eslint-disable-next-line
   }, []);
 
@@ -47,7 +51,7 @@ const Home = () => {
       ...prevParams,
       page: params.page + 1,
     }));
-    if (data.length === 99999) {
+    if (data.length === 250) {
       sethasMore(false);
     }
   };
@@ -88,4 +92,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default LastDays;

@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "./home.css";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Card from "../../Components/Card/Card";
+import Card from "../../../Components/Card/Card";
+import handleSearchThirty from "../../../assets/functions/functions";
 
-const Home = () => {
+const BestYear = () => {
+  // eslint-disable-next-line
   const [hasMore, sethasMore] = useState(true);
   const [data, setData] = useState([]);
-  const [params, setParams] = useState({ page: 1, page_size: 40 });
+  const [params, setParams] = useState({
+    page: 1,
+    page_size: 40,
+    dates: handleSearchThirty("sub", 365),
+    ordering: "-ranking",
+  });
 
   useEffect(() => {
     const getData = async () => {
@@ -25,6 +31,7 @@ const Home = () => {
       }
     };
     getData();
+
     //eslint-disable-next-line
   }, []);
 
@@ -47,9 +54,6 @@ const Home = () => {
       ...prevParams,
       page: params.page + 1,
     }));
-    if (data.length === 99999) {
-      sethasMore(false);
-    }
   };
 
   return (
@@ -88,4 +92,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default BestYear;
