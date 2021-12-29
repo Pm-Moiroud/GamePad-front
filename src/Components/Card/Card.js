@@ -14,7 +14,10 @@ import { TiPlus } from "react-icons/ti";
 import { IoLogoPlaystation } from "react-icons/io";
 
 import { FaLinux, FaXbox, FaFirefoxBrowser } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
 function Card({ data }) {
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [hoverId, setHoverId] = useState(Number);
 
@@ -36,7 +39,11 @@ function Card({ data }) {
         }}
       >
         <div className="card-image">
-          <img src={data.background_image} alt="" />
+          <img
+            onClick={() => navigate(`/game/${data.id}`)}
+            src={data.background_image}
+            alt="background games"
+          />
         </div>
         <div className="card-body">
           <div className="card-platforms">
@@ -79,9 +86,11 @@ function Card({ data }) {
             <div className="card-metacritic">
               <p
                 className={
-                  (data.metacritic > 80 && "green") ||
-                  (data.metacritic > 60 && "orange") ||
-                  (data.metacritic < 50 && "rouge")
+                  data.metacritic >= 80
+                    ? "green"
+                    : data.metacritic > 60
+                    ? "orange"
+                    : "rouge"
                 }
               >
                 {data.metacritic}

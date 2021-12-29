@@ -1,26 +1,34 @@
+import "./search.css";
+
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Card from "../../../Components/Card/Card";
-import handleSearchThirty from "../../../assets/functions/functions";
+import Card from "../../Components/Card/Card";
 
-const BestYear = () => {
-  // eslint-disable-next-line
+const Search = ({ defaultParams, setDefaultParams }) => {
+  const input = useParams();
   const [hasMore, sethasMore] = useState(true);
   const [data, setData] = useState([]);
   const [params, setParams] = useState({
     page: 1,
     page_size: 40,
-    dates: handleSearchThirty("sub", 365),
-    ordering: "-ranking",
+    search: input.input,
   });
 
   useEffect(() => {
+    console.log("input ====", input.input);
+    console.log("defaultParams ====", defaultParams);
     const getData = async () => {
       try {
-        const response = await axios.post("http://localhost:3001/games/all", {
-          params,
-        });
+        const response = await axios.post(
+          "http://localhost:3001/search/default",
+          {
+            page: 1,
+            page_size: 40,
+            search: input.input,
+          }
+        );
         setData(response.data);
         setParams((prevParams) => ({
           ...prevParams,
@@ -33,7 +41,7 @@ const BestYear = () => {
     getData();
 
     //eslint-disable-next-line
-  }, []);
+  }, [defaultParams]);
 
   const fetchNewData = async () => {
     try {
@@ -54,13 +62,17 @@ const BestYear = () => {
       ...prevParams,
       page: params.page + 1,
     }));
+    if (data.length === 99999) {
+      sethasMore(false);
+    }
   };
 
   return (
     <div className="global-container">
       <div className="withnav-container">
         <div className="home-content">
-          <h1>Best of the year</h1>
+          <h1>Search result</h1>
+          <p>You've searched {input.input}</p>
           <button className="home-content-btn">
             Order by : <span className="underline">Revelance</span>
           </button>
@@ -91,4 +103,4 @@ const BestYear = () => {
   );
 };
 
-export default BestYear;
+export default Search;

@@ -62,8 +62,7 @@ const LastDays = () => {
     <div className="global-container">
       <div className="withnav-container">
         <div className="home-content">
-          <h1>New and trending</h1>
-          <p>Based on player counts and release date</p>
+          <h1>Popular in 2020</h1>
           <button className="home-content-btn">
             Order by : <span className="underline">Revelance</span>
           </button>

@@ -1,30 +1,33 @@
+import "./genre.css";
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Card from "../../../Components/Card/Card";
-import handleSearchThirty from "../../../assets/functions/functions";
 
-const BestYear = () => {
-  // eslint-disable-next-line
+const Genres = ({ params }) => {
   const [hasMore, sethasMore] = useState(true);
   const [data, setData] = useState([]);
-  const [params, setParams] = useState({
+
+  const [paramsNext, setParamsNext] = useState({
     page: 1,
     page_size: 40,
-    dates: handleSearchThirty("sub", 365),
     ordering: "-ranking",
   });
 
   useEffect(() => {
     const getData = async () => {
+      console.log(params);
       try {
         const response = await axios.post("http://localhost:3001/games/all", {
           params,
         });
+        console.log(response.data);
         setData(response.data);
-        setParams((prevParams) => ({
+        setParamsNext((prevParams) => ({
           ...prevParams,
-          page: params.page + 1,
+          page: paramsNext.page + 1,
+          genres: params.genres,
         }));
       } catch (error) {
         console.log(error.message);
@@ -33,12 +36,12 @@ const BestYear = () => {
     getData();
 
     //eslint-disable-next-line
-  }, []);
+  }, [params]);
 
   const fetchNewData = async () => {
     try {
       const res = await axios.post(`http://localhost:3001/games/all`, {
-        params,
+        params: paramsNext,
       });
       const data = await res.data;
       return data;
@@ -50,17 +53,20 @@ const BestYear = () => {
   const fetchData = async () => {
     const nextData = await fetchNewData();
     setData([...data, ...nextData]);
-    setParams((prevParams) => ({
+    setParamsNext((prevParams) => ({
       ...prevParams,
-      page: params.page + 1,
+      page: paramsNext.page + 1,
     }));
+    if (data.length === 99999) {
+      sethasMore(false);
+    }
   };
 
   return (
     <div className="global-container">
       <div className="withnav-container">
         <div className="home-content">
-          <h1>Best of the year</h1>
+          <h1>Popular in 2020</h1>
           <button className="home-content-btn">
             Order by : <span className="underline">Revelance</span>
           </button>
@@ -91,4 +97,4 @@ const BestYear = () => {
   );
 };
 
-export default BestYear;
+export default Genres;
